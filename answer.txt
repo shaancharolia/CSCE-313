@@ -1,0 +1,86 @@
+(1) Larger File Required Time
+
+Test results for different file sizes with 512 byte buffer
+1KB file: 345 microseconds | 
+10KB file: 1463 microseconds | 
+100KB file: 16989 microseconds | 
+1MB file: 131728 microseconds | 0.122 seconds
+10MB file: 1.27058e+06 microseconds | 1.270 seconds
+100MB file: 1.32547e+07 microseconds | 13.255 seconds
+
+  Time (s)
+15 |                                                   * (100MB, 13.255s)
+12 |                                   
+10 |
+ 8 |
+ 6 |
+ 4 |
+ 2 |                       * (10MB, 1.270s)
+ 1 |            * (1MB, 0.132s)
+0.1|     * (100KB, 0.017s)
+0.01|  * (10KB, 0.0015s)
+0.001|* (1KB, 0.0003s)
+    +--------------------------------------------------
+      0.001      0.01       0.1         1        10       100  
+                           File Size (MB)
+
+(2) Bottle neck
+Small buffer size: With a default buffer of 256 bytes, transferring 100MB requires approximately 390,625 individual requests/responses, creating significant overhead.
+The buffer size is relatively slow at 256 bytes. This is what is slowing down the program.
+The larger files like the 100MB has a lot of requests like more than 300k so it creates overhead.
+If there is increased in buffer bytes then the program would speed up.
+
+
+
+
+How I calculated the different times for the different sizes:
+
+shaancharolia@Shaans-MacBook-Pro-7 PA-1 % echo "Testing 1KB file:"
+time ./client -f test_1KB.bin
+Testing 1KB file:
+File lenght: 1024
+The data exchange performed took: 345 microseconds
+Client-side is done and exited
+Server terminated
+./client -f test_1KB.bin  0.19s user 0.37s system 28% cpu 1.948 total
+shaancharolia@Shaans-MacBook-Pro-7 PA-1 % echo "Testing 10KB file:"
+time ./client -f test_10KB.bin
+Testing 10KB file:
+File lenght: 10240
+The data exchange performed took: 1463 microseconds
+Client-side is done and exited
+Server terminated
+./client -f test_10KB.bin  0.19s user 0.16s system 24% cpu 1.411 total
+shaancharolia@Shaans-MacBook-Pro-7 PA-1 % echo "Testing 100KB file:"
+time ./client -f test_100KB.bin
+Testing 100KB file:
+File lenght: 102400
+The data exchange performed took: 16989 microseconds
+Client-side is done and exited
+Server terminated
+./client -f test_100KB.bin  0.19s user 0.10s system 22% cpu 1.294 total
+shaancharolia@Shaans-MacBook-Pro-7 PA-1 % echo "Testing 1MB file:"
+time ./client -f test_1MB.bin
+Testing 1MB file:
+File lenght: 1048576
+The data exchange performed took: 131728 microseconds
+Client-side is done and exited
+Server terminated
+./client -f test_1MB.bin  0.22s user 0.25s system 31% cpu 1.507 total
+shaancharolia@Shaans-MacBook-Pro-7 PA-1 % echo "Testing 10MB file:"
+time ./client -f test_10MB.bin
+Testing 10MB file:
+File lenght: 10485760
+The data exchange performed took: 1.27058e+06 microseconds
+Client-side is done and exited
+Server terminated
+./client -f test_10MB.bin  0.49s user 1.13s system 61% cpu 2.651 total
+shaancharolia@Shaans-MacBook-Pro-7 PA-1 % echo "Testing 100MB file:"
+time ./client -f test_100MB.bin
+Testing 100MB file:
+File lenght: 104857600
+The data exchange performed took: 1.32547e+07 microseconds
+Client-side is done and exited
+Server terminated
+./client -f test_100MB.bin  3.62s user 9.79s system 91% cpu 14.645 total
+
